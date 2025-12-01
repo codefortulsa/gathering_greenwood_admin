@@ -79,6 +79,10 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:invite, keys: %i[login email])
   end
 
+  def after_sign_in_path_for(resource)
+    forge_path
+  end
+
   def check_role(role)
     permission_denied unless user_signed_in? && current_user.has_role?(role)
   end
