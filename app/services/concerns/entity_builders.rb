@@ -14,6 +14,7 @@ module EntityBuilders
       address: format_address(primary_address),
       latitude: building.latitude,
       longitude: building.longitude,
+      building_types: 'residential',
       confidence_score: 100,
       confidence_reasons: [],
       type: 'building'
@@ -45,7 +46,7 @@ module EntityBuilders
       address.name,
       address.suffix
     ].compact.join(' ')
-    
+
     parts += ", #{address.city}" if address.city.present?
     parts
   end

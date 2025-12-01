@@ -22,10 +22,10 @@ module Api
 
       SEARCH_YEARS.each do |year|
         buildings = search_buildings(search_term, year, require_coordinates: true)
-        
+
         buildings.each do |building|
           next unless building.latitude && building.longitude
-          
+
           # Build simple GeoJSON feature
           feature = {
             type: 'Feature',
@@ -35,7 +35,7 @@ module Api
             },
             properties: build_building_hash(building, year)
           }
-          
+
           all_features << feature
         end
       end

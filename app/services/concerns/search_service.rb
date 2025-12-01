@@ -26,14 +26,14 @@ module SearchService
                    "%#{search_term}%", "%#{search_term}%", "%#{search_term}%", "%#{search_term}%")
             .distinct
             .pluck(:id)
-    
+
     # Also find buildings where matching people lived
     people = search_people(search_term, year)
     people_building_ids = people.map(&:building_id).compact
-    
+
     # Combine both sets of building IDs
     all_building_ids = (building_ids + people_building_ids).uniq
-    
+
     # Build the final query
     query = Building.where(id: all_building_ids)
     query = query.where.not(latitude: nil, longitude: nil) if require_coordinates
