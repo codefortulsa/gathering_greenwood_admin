@@ -72,6 +72,7 @@ Rails.application.routes.draw do
       get :autocomplete
       get :advanced_search_filters
       post :bulk_review
+      get :pois
     end
     member do
       put :review

@@ -127,6 +127,16 @@ module Buildings
       redirect_to @photo.file.variant(resize_to_fit: ResizeToFit.run!(style: params[:style], device: params[:device]))
     end
 
+    def pois
+      # Load only the 16 Points of Interest
+      poi_ids = [727, 770, 771, 778, 781, 890, 891, 897, 1055, 1143, 1144, 1145, 1146, 1147, 1148, 1149]
+      authorize! :read, Building
+      @search = BuildingSearch.generate params: { s: { id_in: poi_ids }, f: ['name', 'street_address', 'locality', 'building_type'] },
+                                        user: current_user
+      @search.expanded = true if request.format.csv?
+      render :index
+    end
+
     private
 
     def load_residents
