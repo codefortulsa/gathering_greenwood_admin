@@ -61,6 +61,8 @@ header
                   - next if Current.locality_id && row.id == Current.locality_id
                   = link_to row.short_name, set_locality_path(row), data: { method: :put }, class: 'dropdown-item'
 
+          li.nav-item= link_to 'Greenwood Cultural Center', 'https://www.greenwoodculturalcenter.org', target: '_blank', class: 'nav-link'
+
           li.nav-item.dropdown
             a.nav-link.dropdown-toggle data-toggle='dropdown' href="#"
               | Data
@@ -74,13 +76,6 @@ header
               = link_to 'Audio Recordings', audios_path, class: 'dropdown-item'
               = link_to 'Videos', videos_path, class: 'dropdown-item'
 
-          li.nav-item= link_to 'Greenwood Cultural Center', 'https://www.greenwoodculturalcenter.org', target: '_blank', class: 'nav-link'
-
-          li.nav-item.dropdown
-            a.dropdown-toggle.nav-link data-toggle="dropdown" href="#" More
-            .dropdown-menu
-              = link_to 'Contact', '/contact', class: 'dropdown-item'
-              = link_to 'Volunteer', '/volunteer', class: 'dropdown-item'
           - if user_signed_in?
             li.nav-item.dropleft
               a.nav-link.dropdown-toggle data-toggle='dropdown' data-placement="left" href="#"
