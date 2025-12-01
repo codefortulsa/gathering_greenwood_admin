@@ -131,7 +131,7 @@ module Buildings
       # Load only the 16 Points of Interest
       poi_ids = [727, 770, 771, 778, 781, 890, 891, 897, 1055, 1143, 1144, 1145, 1146, 1147, 1148, 1149]
       authorize! :read, Building
-      
+
       respond_to do |format|
         format.html do
           # For HTML, use the search framework
@@ -154,7 +154,7 @@ module Buildings
                               .order('addresses.name ASC')
                               .offset(from)
                               .limit(to - from)
-          
+
           # Format for AgGrid
           data = buildings.map do |building|
             {
@@ -165,7 +165,7 @@ module Buildings
               building_type: building.building_types.map(&:name).join(', ')
             }
           end
-          
+
           render json: data
         end
       end
