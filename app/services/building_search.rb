@@ -61,7 +61,7 @@ class BuildingSearch < SearchQueryBuilder
   end
 
   def default_fields
-    %w[street_address locality building_type]
+    %w[name street_address locality building_type]
   end
 
   def all_fields
