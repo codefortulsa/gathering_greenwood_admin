@@ -50,6 +50,86 @@
 
 <% unless @page %>
   <% content_for :content do %>
-    <h2>Welcome to the Greenwood Mapping Project Admin. You are up and running.</h2>
+    <h2>Welcome to the Greenwood Mapping Project Admin</h2>
+    
+    <div class="alert alert-info mt-4">
+      <h4><i class="fa fa-info-circle"></i> Getting Started</h4>
+      <p>This admin portal allows you to manage historical data for the Greenwood District and the 1921 Tulsa Race Massacre.</p>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h4 class="card-title"><i class="fa fa-building"></i> Managing Buildings</h4>
+            <p>Add or edit buildings from the Greenwood District:</p>
+            <ol>
+              <li>Go to <strong>Data → Buildings</strong></li>
+              <li>Click <strong>"New Building"</strong> to add a new entry</li>
+              <li>Fill in the building name, address, and year</li>
+              <li>Upload photos, videos, and documents</li>
+              <li>Link people who lived or worked there</li>
+            </ol>
+            <a href="/buildings" class="btn btn-primary">Go to Buildings</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h4 class="card-title"><i class="fa fa-users"></i> Managing People</h4>
+            <p>Add or edit information about Greenwood residents:</p>
+            <ol>
+              <li>Go to <strong>Data → All People</strong></li>
+              <li>Click on a person's name to edit their record</li>
+              <li>Add biographical details, census data, and photos</li>
+              <li>Link them to buildings where they lived or worked</li>
+            </ol>
+            <a href="/people" class="btn btn-primary">Go to People</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h4 class="card-title"><i class="fa fa-camera"></i> Adding Media</h4>
+            <p>Upload photographs, videos, and audio recordings:</p>
+            <ol>
+              <li>Go to <strong>Data → Photographs/Videos/Audio Recordings</strong></li>
+              <li>Click <strong>"New"</strong> to upload a file</li>
+              <li>Add captions, descriptions, and dates</li>
+              <li>Link media to buildings or people</li>
+            </ol>
+            <a href="/photographs" class="btn btn-primary">Go to Photographs</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h4 class="card-title"><i class="fa fa-file-text"></i> Census Data</h4>
+            <p>View and edit census records from 1910-1940:</p>
+            <ol>
+              <li>Go to <strong>Data → 1910/1920/1930 US Census</strong></li>
+              <li>Search for census records by name or address</li>
+              <li>Edit census details and link to people/buildings</li>
+              <li>Add occupation, family, and demographic information</li>
+            </ol>
+            <a href="/census/1920" class="btn btn-primary">Go to 1920 Census</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-success mt-4">
+      <h4><i class="fa fa-question-circle"></i> Need Help?</h4>
+      <p><strong>Questions?</strong> Contact your system administrator or refer to the user guide.</p>
+      <p><strong>Tip:</strong> Use the <strong>Data</strong> menu in the navigation bar to access all management tools.</p>
+    </div>
   <% end %>
 <% end %>
