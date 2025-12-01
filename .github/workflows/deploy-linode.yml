@@ -38,7 +38,7 @@ jobs:
             echo ""
             echo "📥 Fetching latest code from GitHub..."
             sudo -u rails git fetch origin
-            sudo -u rails git reset --hard origin/main
+            sudo -u rails git reset --hard origin/master
 
             echo "✅ Updated to commit: $(git log -1 --oneline)"
 
