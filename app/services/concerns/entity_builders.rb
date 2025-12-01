@@ -10,7 +10,7 @@ module EntityBuilders
     {
       id: building.id,
       name: building.name || "Building #{building.id}",
-      year: primary_address&.year || year,
+      year: (primary_address&.year || year).to_i,
       address: format_address(primary_address),
       latitude: building.latitude,
       longitude: building.longitude,
@@ -26,7 +26,7 @@ module EntityBuilders
       id: person.id,
       name: "#{person.first_name} #{person.last_name}".strip,
       sortable_name: "#{person.last_name}, #{person.first_name}".strip,
-      year: person.class.name.match(/\d+/)&.to_s || year,
+      year: (person.class.name.match(/\d+/)&.to_s || year).to_i,
       type: 'person'
     }
   end

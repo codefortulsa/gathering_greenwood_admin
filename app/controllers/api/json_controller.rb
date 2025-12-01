@@ -143,11 +143,12 @@ module Api
       year_counts = {}
 
       SEARCH_YEARS.each do |year|
-        year_buildings = results[:buildings].select { |b| b[:year] == year }
-        year_people = results[:people].select { |p| p[:year] == year }
-        year_documents = results[:documents].select { |d| d[:year] == year }
-        year_stories = results[:stories].select { |s| s[:year] == year }
-        year_media = results[:media].select { |m| m[:year] == year }
+        year_int = year.to_i
+        year_buildings = results[:buildings].select { |b| b[:year] == year_int }
+        year_people = results[:people].select { |p| p[:year] == year_int }
+        year_documents = results[:documents].select { |d| d[:year] == year_int }
+        year_stories = results[:stories].select { |s| s[:year] == year_int }
+        year_media = results[:media].select { |m| m[:year] == year_int }
 
         census_records_count = count_census_records(year_documents)
 
@@ -158,7 +159,7 @@ module Api
           census_records: census_records_count,
           stories: year_stories.count,
           media: year_media.count,
-          year: year
+          year: year_int
         }
       end
 
