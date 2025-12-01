@@ -68,7 +68,7 @@ header
               | Data
             .dropdown-menu
               = link_to 'Buildings', '/buildings', class: 'dropdown-item'
-              = link_to 'Points of Interest', '/buildings?q[addresses_searchable_text_cont]=data-poi', class: 'dropdown-item'
+              = link_to 'Points of Interest', '/buildings?q[id_in][]=727&q[id_in][]=770&q[id_in][]=771&q[id_in][]=778&q[id_in][]=781&q[id_in][]=890&q[id_in][]=891&q[id_in][]=897&q[id_in][]=1055&q[id_in][]=1143&q[id_in][]=1144&q[id_in][]=1145&q[id_in][]=1146&q[id_in][]=1147&q[id_in][]=1148&q[id_in][]=1149', class: 'dropdown-item'
               - CensusYears.each_visible_to_user(user_signed_in?) do |year|
                 = link_to "#{year} US Census", "/census/#{year}", class: 'dropdown-item'
               = link_to 'All People', '/people', class: 'dropdown-item' if can_people?
