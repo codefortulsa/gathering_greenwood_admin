@@ -82,7 +82,8 @@ NameCellRenderer.prototype.init = function(params) {
       if (baseUrl.match(/\/(pois|autocomplete|advanced_search_filters)$/)) {
         baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/'))
       }
-      const link = baseUrl + '/' + (value.id || value)
+      // Link directly to edit page for easier admin workflow
+      const link = baseUrl + '/' + (value.id || value) + '/edit'
       this.eGui.innerHTML = `<a href="${link}" title="${value.name}">${value.name}</a>`
     } else {
       this.eGui.innerHTML = value.name
