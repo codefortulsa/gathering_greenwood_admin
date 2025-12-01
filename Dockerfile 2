@@ -1,0 +1,116 @@
+# Production Dockerfile for Gathering Greenwood Admin (Rails Backend)
+
+FROM ruby:3.4.4-slim AS builder
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV RAILS_ENV=production
+ENV NODE_ENV=production
+ENV LANG=en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
+
+# Install build dependencies
+RUN apt-get update -qq && \
+    apt-get install -y --no-install-recommends \
+    build-essential \
+    git \
+    curl \
+    libpq-dev \
+    libvips \
+    libvips-dev \
+    libvips-tools \
+    postgresql-client \
+    locales \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set up locale
+RUN locale-gen en_US.UTF-8
+
+# Install Node.js 20.x for asset compilation
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Yarn via Corepack
+RUN corepack enable && \
+    corepack prepare yarn@4.9.1 --activate
+
+# Set working directory
+WORKDIR /app
+
+# Install bundler
+RUN gem install bundler:2.6.9
+
+# Copy dependency files
+COPY Gemfile Gemfile.lock ./
+
+# Install Ruby gems (production only)
+RUN bundle config set --local deployment 'true' && \
+    bundle config set --local without 'development test' && \
+    bundle install --jobs 4 --retry 3
+
+# Copy package files
+COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn ./.yarn
+
+# Install Node dependencies
+RUN yarn install --immutable
+
+# Copy application code
+COPY . .
+
+# Precompile assets
+RUN SECRET_KEY_BASE=dummy \
+    RAILS_MASTER_KEY=dummy \
+    bundle exec rails assets:precompile
+
+# Final stage - smaller runtime image
+FROM ruby:3.4.4-slim
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV RAILS_ENV=production
+ENV RAILS_SERVE_STATIC_FILES=true
+ENV RAILS_LOG_TO_STDOUT=true
+ENV LANG=en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
+
+# Install runtime dependencies only
+RUN apt-get update -qq && \
+    apt-get install -y --no-install-recommends \
+    libpq5 \
+    libvips \
+    postgresql-client \
+    locales \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set up locale
+RUN locale-gen en_US.UTF-8
+
+WORKDIR /app
+
+# Install bundler
+RUN gem install bundler:2.6.9
+
+# Copy gems from builder
+COPY --from=builder /usr/local/bundle /usr/local/bundle
+
+# Copy application from builder
+COPY --from=builder /app /app
+
+# Create non-root user
+RUN groupadd -r app && \
+    useradd -r -g app -d /app -s /sbin/nologin app && \
+    chown -R app:app /app
+
+# Switch to non-root user
+USER app
+
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:3000/check.txt || exit 1
+
+# Start Rails server
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "3000"]

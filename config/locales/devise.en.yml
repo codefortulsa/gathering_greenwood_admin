@@ -21,9 +21,9 @@ en:
       unconfirmed: "You have to confirm your account before continuing."
     mailer:
       confirmation_instructions:
-        subject: "HistoryForge email address confirmation instructions"
+        subject: "Greenwood Mapping Project - Email address confirmation instructions"
       reset_password_instructions:
-        subject: "HistoryForge Reset password instructions"
+        subject: "Greenwood Mapping Project - Reset password instructions"
       unlock_instructions:
         subject: "Unlock Instructions"
     omniauth_callbacks:
