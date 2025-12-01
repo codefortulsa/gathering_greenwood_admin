@@ -80,7 +80,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    forge_path
+    buildings_path # Redirect to Buildings list (works without Google Maps)
   end
 
   def check_role(role)
