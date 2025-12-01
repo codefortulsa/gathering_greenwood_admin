@@ -131,10 +131,44 @@ module Buildings
       # Load only the 16 Points of Interest
       poi_ids = [727, 770, 771, 778, 781, 890, 891, 897, 1055, 1143, 1144, 1145, 1146, 1147, 1148, 1149]
       authorize! :read, Building
-      @search = BuildingSearch.generate params: { s: { id_in: poi_ids }, f: ['name', 'street_address', 'locality', 'building_type'] },
-                                        user: current_user
-      @search.expanded = true if request.format.csv?
-      render :index
+      
+      respond_to do |format|
+        format.html do
+          # For HTML, use the search framework
+          poi_params = params.permit!.to_h.merge(s: { id_in: poi_ids }, f: ['name', 'street_address', 'locality', 'building_type'])
+          @search = BuildingSearch.generate params: poi_params, user: current_user
+          render :index
+        end
+        format.csv do
+          poi_params = params.permit!.to_h.merge(s: { id_in: poi_ids }, f: ['name', 'street_address', 'locality', 'building_type'])
+          @search = BuildingSearch.generate params: poi_params, user: current_user
+          render_csv('buildings', Building)
+        end
+        format.json do
+          # For JSON, query directly
+          from = params[:from].to_i
+          to = params[:to].to_i
+          buildings = Building.where(id: poi_ids)
+                              .left_outer_joins(:addresses)
+                              .preload(:locality, :addresses)
+                              .order('addresses.name ASC')
+                              .offset(from)
+                              .limit(to - from)
+          
+          # Format for AgGrid
+          data = buildings.map do |building|
+            {
+              id: building.id,
+              name: building.name,
+              street_address: { name: building.street_address, id: building.id, reviewed: building.reviewed? },
+              locality: building.locality&.name,
+              building_type: building.building_types.map(&:name).join(', ')
+            }
+          end
+          
+          render json: data
+        end
+      end
     end
 
     private
