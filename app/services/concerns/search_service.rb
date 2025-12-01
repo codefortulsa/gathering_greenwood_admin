@@ -19,13 +19,24 @@ module SearchService
 
   private
 
-  def search_buildings(search_term, _year, require_coordinates: false)
-    query = Building.joins(:addresses)
+  def search_buildings(search_term, year, require_coordinates: false)
+    # Find buildings by name/address
+    building_ids = Building.joins(:addresses)
             .where('addresses.city ILIKE ? OR addresses.name ILIKE ? OR addresses.searchable_text ILIKE ? OR buildings.name ILIKE ?',
                    "%#{search_term}%", "%#{search_term}%", "%#{search_term}%", "%#{search_term}%")
-
+            .distinct
+            .pluck(:id)
+    
+    # Also find buildings where matching people lived
+    people = search_people(search_term, year)
+    people_building_ids = people.map(&:building_id).compact
+    
+    # Combine both sets of building IDs
+    all_building_ids = (building_ids + people_building_ids).uniq
+    
+    # Build the final query
+    query = Building.where(id: all_building_ids)
     query = query.where.not(latitude: nil, longitude: nil) if require_coordinates
-
     query.limit(50).distinct
   end
 
