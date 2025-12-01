@@ -76,7 +76,13 @@ NameCellRenderer.prototype.init = function(params) {
   this.eGui = document.createElement('div')
   if (value && value.name) {
     if (value.id) {
-      const link = document.location.toString().split('?')[0] + '/' + (value.id || value)
+      // Extract base URL and handle collection routes like /buildings/pois
+      let baseUrl = document.location.pathname.split('?')[0]
+      // If URL ends with a collection action (e.g., /buildings/pois), go up one level
+      if (baseUrl.match(/\/(pois|autocomplete|advanced_search_filters)$/)) {
+        baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/'))
+      }
+      const link = baseUrl + '/' + (value.id || value)
       this.eGui.innerHTML = `<a href="${link}" title="${value.name}">${value.name}</a>`
     } else {
       this.eGui.innerHTML = value.name
