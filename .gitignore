@@ -87,3 +87,9 @@ codealike.json
 
 app/assets/builds/*.js
 app/assets/builds/*.js.map
+# Deployment documentation (keep in parent GCC directory only)
+DEPLOYMENT*.md
+PUSH_TO_GITHUB.md
+DEPLOY_NOW.md
+FIX_SSH*.md
+
