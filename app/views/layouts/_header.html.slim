@@ -61,7 +61,6 @@ header
                   - next if Current.locality_id && row.id == Current.locality_id
                   = link_to row.short_name, set_locality_path(row), data: { method: :put }, class: 'dropdown-item'
 
-          li.nav-item= link_to 'The Forge', '/forge', class: 'nav-link'
           li.nav-item.dropdown
             a.nav-link.dropdown-toggle data-toggle='dropdown' href="#"
               | Data
